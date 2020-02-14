@@ -1,0 +1,24 @@
+{
+   "name": "bbs-discord-bot",
+   "version": "1.0.0",
+   "main": "index.js",
+   "license": "MIT",
+   "devDependencies": {
+      "@types/cheerio": "^0.22.16",
+      "@types/node": "^8.0.29",
+      "ts-node": "3.3.0",
+      "typescript": "3.3.3333"
+   },
+   "dependencies": {
+      "axios": "^0.19.2",
+      "cheerio": "^1.0.0-rc.3",
+      "discord.js": "^11.5.1",
+      "reflect-metadata": "^0.1.10",
+      "sqlite3": "^4.0.3",
+      "typeorm": "0.2.22",
+      "winston": "^3.2.1"
+   },
+   "scripts": {
+      "start": "ts-node src/Bot.ts"
+   }
+}
