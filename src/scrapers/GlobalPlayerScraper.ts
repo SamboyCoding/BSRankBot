@@ -16,7 +16,7 @@ export default class GlobalPlayerScraper {
         for (let pageNumber = 0; pageNumber < GlobalPlayerScraper.numPagesToScrape; pageNumber++) {
             logger.debug(`[GlobalScraper::list] Loading page ${pageNumber}`);
             try {
-                let response = await axios.get<string>(`https://scoresaber.com/global/${pageNumber + 1}`);
+                const response = await axios.get<string>(`https://scoresaber.com/global/${pageNumber + 1}`);
 
                 const rows = cheerio('tr', response.data);
                 rows.each((playerNum, elem) => {

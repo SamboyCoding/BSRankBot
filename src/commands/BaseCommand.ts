@@ -1,5 +1,4 @@
 import {DMChannel, Guild, GuildMember, Message, TextChannel, User} from 'discord.js';
-import PingCommand from './PingCommand';
 
 export default abstract class BaseCommand {
     private message: Message;
@@ -12,7 +11,7 @@ export default abstract class BaseCommand {
 
     public abstract mustBeRunInGuild(): boolean
 
-    protected getArg(index: number) {
+    protected getArg(index: number): string {
         const split = this.message.content.split(" ");
         return split[index + 1] || null;
     }

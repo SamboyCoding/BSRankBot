@@ -3,6 +3,8 @@ import {Connection, createConnection} from 'typeorm';
 import logger from './Logger';
 import {Client, DMChannel, Message, TextChannel} from 'discord.js';
 import commands from "./commands";
+import TimedUpdater from './TimedUpdater';
+import {serverId} from "../config.json";
 
 export default class BSRankBot {
     public static readonly PREFIX = process.env.BOT_PREFIX || "%";
@@ -11,13 +13,20 @@ export default class BSRankBot {
     public static discordClient: Client;
 }
 
-async function onReady() {
-    logger.info(`[Discord] Ready! Server count: ${BSRankBot.discordClient.guilds.size}. User Count: ${BSRankBot.discordClient.users.size}`);
+function runUpdate(): void {
+    TimedUpdater.updateForGuild(BSRankBot.discordClient.guilds.get(serverId))
+        .catch((e) => logger.error(e.stack || e));
 }
 
-logger.info("[Init] Connecting to database...");
+async function onReady(): Promise<void> {
+    logger.info(`[Discord] Ready! Server count: ${BSRankBot.discordClient.guilds.size}. User Count: ${BSRankBot.discordClient.users.size}`);
 
-function onMessage(message: Message) {
+    runUpdate();
+
+    setInterval(runUpdate, 60 * 1000 * 10);
+}
+
+function onMessage(message: Message): void {
     if(!message.content.startsWith(BSRankBot.PREFIX)) return;
 
     const split = message.content.split(" ");
@@ -26,22 +35,29 @@ function onMessage(message: Message) {
 
     if(!command) return;
 
-    if(message.channel instanceof DMChannel)
-        return message.channel.send("This command must be run in a server.");
+    if(message.channel instanceof DMChannel) {
+        message.channel.send("This command must be run in a server.").catch(logger.error);
+        return;
+    }
 
-    if(command.requiresAdmin() && (message.channel instanceof TextChannel && !message.member.hasPermission('ADMINISTRATOR')))
-        return message.channel.send("⛔ You can't do that! ⛔");
+    if(command.requiresAdmin() && (message.channel instanceof TextChannel && !message.member.hasPermission('ADMINISTRATOR'))) {
+        message.channel.send("⛔ You can't do that! ⛔").catch(logger.error);
+        return;
+    }
 
     command.run(
         message,
         message.channel as (TextChannel | DMChannel),
         message.author,
-        (message instanceof TextChannel ? message.guild : null),
-        (message instanceof TextChannel ? message.member : null)
+        message.guild || null,
+        message.member || null,
     ).catch(e => {
-        logger.error("[Command] Exception thrown! " + e);
+        logger.error("[Command] Exception thrown! " + (e.stack || e));
     });
 }
+
+
+logger.info("[Init] Connecting to database...");
 
 createConnection().then(async connection => {
     logger.info("[Init] Connected to database.");
@@ -53,7 +69,6 @@ createConnection().then(async connection => {
 
     await BSRankBot.discordClient.login(process.env.DISCORD_TOKEN || "NO_TOKEN_PROVIDED"); //Don't catch, we want to crash
 
-
     logger.info("[Init] Connected to discord.");
 
-}).catch(error => logger.error(error));
+}).catch(logger.error);

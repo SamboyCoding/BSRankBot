@@ -4,11 +4,12 @@
          "esnext"
       ],
       "target": "esnext",
-      "module": "none",
+      "module": "CommonJS",
       "moduleResolution": "node",
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "sourceMap": true
+      "sourceMap": true,
+      "resolveJsonModule": true
    }
 }

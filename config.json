@@ -1,0 +1,24 @@
+{
+    "staff": [
+        "Samboy#0063"
+    ],
+    "serverId": "677970670587478057",
+    "regionPositionRoles": {
+        "1": "Top Regional Player",
+        "10": "Top 10",
+        "25": "Top 25",
+        "50": "Top 50",
+        "250": "Top 250",
+        "500": "Top 500"
+    },
+    "globalPositionRoles": {
+        "32": "Top 32 (Global)",
+        "50": "Top 50 (Global)",
+        "100": "Top 100 (Global)",
+        "200": "Top 200 (Global)"
+    },
+    "regionRoles": {
+        "gb": "British",
+        "": "Non-UK"
+    }
+}

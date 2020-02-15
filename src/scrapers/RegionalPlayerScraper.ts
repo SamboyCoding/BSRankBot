@@ -18,7 +18,7 @@ export default class RegionalPlayerScraper {
         for (let pageNumber = 0; pageNumber < RegionalPlayerScraper.numPagesToScrape; pageNumber++) {
             logger.debug(`[RegionalScraper::list] Loading page ${pageNumber}`);
             try {
-                let response = await axios.get<string>(`https://scoresaber.com/global/${pageNumber + 1}?country=${this.region}`);
+                const response = await axios.get<string>(`https://scoresaber.com/global/${pageNumber + 1}?country=${this.region}`);
 
                 const rows = cheerio('tr', response.data);
                 rows.each((playerNum, elem) => {
@@ -33,7 +33,6 @@ export default class RegionalPlayerScraper {
                         players[50 * pageNumber + playerNum - 1] = player;
                     }
                 });
-                logger.debug(`[RegionalScraper::list] Loaded page ${pageNumber}`);
             } catch (e) {
                 logger.error('[RegionalScraper::list] Failed Page fetch! ' + e);
             }

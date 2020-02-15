@@ -3,6 +3,8 @@ import PlayerData from './PlayerData';
 import logger from '../Logger';
 import axios from 'axios';
 import * as cheerio from "cheerio";
+import {GuildMember, User} from 'discord.js';
+import DiscordUserRecord from '../entity/DiscordUserRecord';
 
 export default class PlayerScraper {
     /**
@@ -46,17 +48,33 @@ export default class PlayerScraper {
         return PlayerScraper.getDetailsForPlayer(player);
     }
 
+    public static async getDetailsForDiscordUser(user: User | GuildMember): Promise<PlayerData> {
+        logger.debug(`[PlayerScraper::discord] Looking up discord record for snowflake ${user.id}`);
+
+        //Get the user's discord record from their id
+        const profile = await DiscordUserRecord.findOne(user.id);
+
+        if(!profile)
+            return null;
+
+        //And get their scoresaber profile id
+        const ssUserId = profile.scoreSaberProfile.id;
+
+        //Fetch their profile
+        return await PlayerScraper.getDetailsForID(ssUserId);
+    }
+
     public static async getDetailsForLeaderboardPosition(position: number, region: string = null): Promise<PlayerData> {
         logger.debug(`[PlayerScraper::pos] Looking up id for user in leaderboard pos ${position} in ${region || 'global'} leaderboard`);
 
-        let pageNum = Math.ceil(position / 50);
+        const pageNum = Math.ceil(position / 50);
 
-        let response = await axios.get<string>(`https://scoresaber.com/global/${pageNum}/${region ? `?country=${region}`: ''}`);
+        const response = await axios.get<string>(`https://scoresaber.com/global/${pageNum}/${region ? `?country=${region}`: ''}`);
 
-        let html = response.data;
-        let rows = cheerio('tr', html);
+        const html = response.data;
+        const rows = cheerio('tr', html);
 
-        let row = position % 50 == 0 ? 50 : position % 50;
+        const row = position % 50 == 0 ? 50 : position % 50;
 
         if(rows.length <= row)
             throw Error("Invalid position (< 0 or > total player count?)");
