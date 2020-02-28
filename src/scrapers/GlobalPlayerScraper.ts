@@ -31,7 +31,6 @@ export default class GlobalPlayerScraper {
                         players[50 * pageNumber + playerNum - 1] = player;
                     }
                 });
-                logger.debug(`[GlobalScraper::list] Loaded page ${pageNumber}`);
             } catch (e) {
                 logger.error('[GlobalScraper::list] Failed Page fetch! ' + e);
             }

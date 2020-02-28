@@ -5,6 +5,7 @@ import axios from 'axios';
 import * as cheerio from "cheerio";
 import {GuildMember, User} from 'discord.js';
 import DiscordUserRecord from '../entity/DiscordUserRecord';
+import index from '../commands';
 
 export default class PlayerScraper {
     /**
@@ -34,6 +35,7 @@ export default class PlayerScraper {
         const name = anchors.slice(8, 9).text().trim();
 
         return {
+            id: player.id,
             regionalRank,
             region,
             globalRank,
@@ -44,6 +46,9 @@ export default class PlayerScraper {
 
     public static async getDetailsForID(id: string): Promise<PlayerData> {
         const player = new ScoreSaberUserRecord();
+        const idx = id.indexOf("&");
+        if(idx > 0)
+            id = id.substr(0, idx);
         player.id = id;
         return PlayerScraper.getDetailsForPlayer(player);
     }

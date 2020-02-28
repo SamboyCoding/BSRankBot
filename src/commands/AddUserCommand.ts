@@ -10,11 +10,19 @@ import CommonUtilities from '../CommonUtilities';
 export default class AddMeCommand extends BaseCommand {
 
     public async execute(message: Message, channel: TextChannel | DMChannel, user: User, guild?: Guild, member?: GuildMember): Promise<void> {
-        const dUser = await DiscordUserRecord.findOne(user.id);
-        let id = this.getArg(0);
+        const target = guild.member(message.mentions.users.firstKey() || this.getArg(0));
+
+        if (!target) {
+            await message.reply('You must provide an @mention or a user id as the first argument with this command.');
+            return;
+        }
+
+        const dUser = await DiscordUserRecord.findOne(target.id);
+
+        let id = this.getArg(1);
 
         if (!id) {
-            await message.reply('You must provide a scoresaber profile url with this command.');
+            await message.reply('You must provide a scoresaber profile url as the second argument with this command.');
             return;
         }
 
@@ -53,20 +61,20 @@ export default class AddMeCommand extends BaseCommand {
         await message.reply(`Your account has been linked to the scoresaber account ${profile.name}`);
 
         CommonUtilities.linkScoresaberToDiscord(profile, member, dUser, sUser).catch(e => {
-            logger.error("[AddMe] Exception linking! " + e);
+            logger.error('[AddUser] Exception linking! ' + e);
         });
     }
 
     public getDesc(): string {
-        return 'Adds the user and their scoresaber profile to the database.';
+        return 'Adds the specified user and their scoresaber profile to the database.';
     }
 
     public getName(): string {
-        return 'add-me';
+        return 'add-user';
     }
 
     public requiresAdmin(): boolean {
-        return false;
+        return true;
     }
 
     public mustBeRunInGuild(): boolean {

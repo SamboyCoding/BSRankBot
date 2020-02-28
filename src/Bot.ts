@@ -53,6 +53,7 @@ function onMessage(message: Message): void {
         message.member || null,
     ).catch(e => {
         logger.error("[Command] Exception thrown! " + (e.stack || e));
+        message.channel.send("Uh oh! Something went wrong trying to execute that command!");
     });
 }
 
@@ -64,7 +65,7 @@ createConnection().then(async connection => {
     BSRankBot.connection = connection;
     BSRankBot.discordClient = new Client();
 
-    BSRankBot.discordClient.on('ready', onReady);
+    BSRankBot.discordClient.once('ready', onReady);
     BSRankBot.discordClient.on('message', onMessage);
 
     await BSRankBot.discordClient.login(process.env.DISCORD_TOKEN || "NO_TOKEN_PROVIDED"); //Don't catch, we want to crash
