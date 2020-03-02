@@ -1,9 +1,9 @@
 import BaseCommand from './BaseCommand';
 import {DMChannel, Guild, GuildMember, Message, TextChannel, User} from 'discord.js';
 import DiscordUserRecord from '../entity/DiscordUserRecord';
-import PlayerScraper from '../scrapers/PlayerScraper';
+import PlayerScraper from '../scoresaber/scrapers/PlayerScraper';
 import ScoreSaberUserRecord from '../entity/ScoreSaberUserRecord';
-import PlayerData from '../scrapers/PlayerData';
+import PlayerData from '../scoresaber/scrapers/PlayerData';
 import logger from '../Logger';
 
 export default class PingCommand extends BaseCommand {

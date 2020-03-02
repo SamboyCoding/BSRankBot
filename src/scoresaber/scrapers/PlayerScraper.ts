@@ -1,11 +1,11 @@
-import ScoreSaberUserRecord from '../entity/ScoreSaberUserRecord';
+import ScoreSaberUserRecord from '../../entity/ScoreSaberUserRecord';
 import PlayerData from './PlayerData';
-import logger from '../Logger';
+import logger from '../../Logger';
 import axios from 'axios';
 import * as cheerio from "cheerio";
 import {GuildMember, User} from 'discord.js';
-import DiscordUserRecord from '../entity/DiscordUserRecord';
-import index from '../commands';
+import DiscordUserRecord from '../../entity/DiscordUserRecord';
+import index from '../../commands';
 
 export default class PlayerScraper {
     /**

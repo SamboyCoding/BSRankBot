@@ -1,5 +1,5 @@
 import {GuildMember} from 'discord.js';
-import PlayerScraper from './scrapers/PlayerScraper';
+import PlayerScraper from './scoresaber/scrapers/PlayerScraper';
 import {regionRoles, regionPositionRoles, globalPositionRoles} from '../config.json'
 import logger from './Logger';
 

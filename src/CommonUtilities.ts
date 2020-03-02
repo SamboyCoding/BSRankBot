@@ -1,4 +1,4 @@
-import PlayerData from './scrapers/PlayerData';
+import PlayerData from './scoresaber/scrapers/PlayerData';
 import {GuildMember} from 'discord.js';
 import logger from './Logger';
 import ScoreSaberUserRecord from './entity/ScoreSaberUserRecord';

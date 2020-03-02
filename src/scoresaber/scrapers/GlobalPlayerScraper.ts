@@ -1,10 +1,10 @@
-import ScoreSaberUserRecord from '../entity/ScoreSaberUserRecord';
+import ScoreSaberUserRecord from '../../entity/ScoreSaberUserRecord';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import logger from '../Logger';
+import logger from '../../Logger';
 
 export default class GlobalPlayerScraper {
-    private static numPagesToScrape = 4;
+    public static numPagesToScrape = 4;
 
     /**
      * Loads the first {numPagesToScrape} pages from the scoresaber api. For the default player count of 550, this takes about 8 seconds.

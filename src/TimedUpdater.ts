@@ -1,10 +1,10 @@
 import logger from './Logger';
-import RegionalPlayerScraper from './scrapers/RegionalPlayerScraper';
+import RegionalPlayerScraper from './scoresaber/scrapers/RegionalPlayerScraper';
 import ScoreSaberUserRecord from './entity/ScoreSaberUserRecord';
 import BSRankBot from './Bot';
 import RoleManager from './RoleManager';
 import {Guild} from 'discord.js';
-import GlobalPlayerScraper from './scrapers/GlobalPlayerScraper';
+import GlobalPlayerScraper from './scoresaber/scrapers/GlobalPlayerScraper';
 
 export default class TimedUpdater {
     public static async updateForGuild(guild: Guild): Promise<void> {

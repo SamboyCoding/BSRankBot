@@ -1,7 +1,7 @@
-import ScoreSaberUserRecord from '../entity/ScoreSaberUserRecord';
+import ScoreSaberUserRecord from '../../entity/ScoreSaberUserRecord';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import logger from '../Logger';
+import logger from '../../Logger';
 
 export default class RegionalPlayerScraper {
     private static numPlayersToScrape = Number(process.env.PLAYER_SCRAPE_COUNT) || 550;
