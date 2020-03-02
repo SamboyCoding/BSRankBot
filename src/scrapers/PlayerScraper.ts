@@ -17,7 +17,7 @@ export default class PlayerScraper {
         const response = await axios.get<string>(`https://scoresaber.com/u/${player.id}`);
         const html = response.data as string;
 
-        const ul = cheerio('ul', html)[0];
+        const ul = cheerio(".columns .column:not(.is-narrow) ul", html)[0];
 
         const rankingLi = cheerio(`strong:contains("Player Ranking:")`, ul).parent().slice(0, 1);
         const links = cheerio('a', rankingLi);
@@ -25,14 +25,14 @@ export default class PlayerScraper {
         const regionLink = links.slice(-1).attr('href');
         const region = regionLink.slice(-2);
 
-        const anchors = cheerio('a', html);
-        const globalRank = Number(anchors.slice(9, 10).text().slice(1).replace(',', ''));
-        const regionalRank = Number(anchors.slice(10, 11).text().slice(2).replace(',', ''));
+        const rankingAnchors = cheerio("li:first-child a", ul);
+        const globalRank = Number(rankingAnchors.slice(0, 1).text().slice(1).replace(',', ''));
+        const regionalRank = Number(rankingAnchors.slice(1, 2).text().slice(2).replace(',', ''));
 
         const ppLi = cheerio(`strong:contains("Performance Points:")`, ul).parent().slice(0, 1);
 
         const pp = Number(ppLi.text().replace('pp', '').replace(/\s/g, '').replace('PerformancePoints:', '').replace(",", ""));
-        const name = anchors.slice(8, 9).text().trim();
+        const name = cheerio('.title.is-5 a', html).text().trim();
 
         return {
             id: player.id,

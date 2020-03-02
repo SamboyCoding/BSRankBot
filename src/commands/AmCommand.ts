@@ -5,12 +5,14 @@ import PlayerScraper from '../scrapers/PlayerScraper';
 
 export default class AmCommand extends BaseCommand {
     protected async execute(message: Message, channel: TextChannel | DMChannel, user: User, guild?: Guild, member?: GuildMember): Promise<void> {
-        const ssProfile = (await DiscordUserRecord.findOne(user.id)).scoreSaberProfile;
+        const discordProfile = (await DiscordUserRecord.findOne(user.id));
 
-        if (!ssProfile) {
+        if (!discordProfile) {
             await message.reply(`You're not in the database`);
             return;
         }
+
+        const ssProfile = discordProfile.scoreSaberProfile;
 
         const userData = await PlayerScraper.getDetailsForPlayer(ssProfile);
         const oneLower = await PlayerScraper.getDetailsForLeaderboardPosition(userData.globalRank + 1);
