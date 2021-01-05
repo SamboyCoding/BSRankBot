@@ -13,7 +13,7 @@
       "typescript": "3.8.2"
    },
    "dependencies": {
-      "axios": "^0.19.2",
+      "axios": "^0.21.1",
       "cheerio": "^1.0.0-rc.3",
       "discord.js": "^11.5.1",
       "reflect-metadata": "^0.1.10",
